@@ -1,13 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BlackJack</title>
+   <link rel="stylesheet" href="css/style.css">
+    <link href="css/card-deck-css/css/cardstarter.css" rel="stylesheet" />
     <script defer src="js/app.js"></script>
-    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    
+    <main>
+        <h1>Welcome to BlackJack <br> Place your bet to start! </h1>
+        <h2 id="dealer">Dealer's Hand</h2>
+        <h2 id="player">Player's Hand</h3>
+        <h1 id="p-score"></h1>
+        <h1 id="t-score"></h1>
+        <h1 id="c-score"></h1>
+        <button id="bet">Place bet</button>
+        <button id="hit">Hit</button>
+        <button id="stand">Stand</button>
+        <button id="again"> Play Again! </button>
+        <section id="master-deck-container" class="card-container"></section>
+        <section id="shuffled-deck-container" class="card-container">
+        </section>
+    </main>
 </body>
+
 </html>
