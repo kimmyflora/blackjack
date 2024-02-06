@@ -1,79 +1,66 @@
-/*----- constants -----*/
-
 const suits = ['s', 'c', 'd', 'h'];
 const ranks = ['02', '03', '04', '05', '06', '07', '08', '09', '10', 'J', 'Q', 'K', 'A'];
-const deck = [];
-
-const playerHand = document.getElementById('player')
-const dealerHand = document.getElementById('dealer')
-
+const masterDeck = buildMasterDeck();
 
 /*----- state variables -----*/
-let scores // score keeper
-let decide // player & dealer hit/stand 
-let winner // who won that round 
-let cards //starting cards for p & d
+let scores = { player: 0, dealer: 0 }; // score keeper
+let decide; // player & dealer hit/stand 
+let winner; // who won that round 
+let playerHand = []; // starting cards for player
+let dealerHand = []; // starting cards for dealer
+let isGameInProgress = false; 
 let shuffledDeck;
+let usedCards =[];
 
 /*----- cached elements  -----*/
-
-const betButton = document.getElementById('bet')
-const hitButton = document.getElementById('hit')
-const standButton = document.getElementById('stand')
-
+const shuffledContainer = document.getElementById('shuffled-deck-container');
+const playAgainButton = document.getElementById('again');
+const betButton = document.getElementById('bet');
+const hitButton = document.getElementById('hit');
+const standButton = document.getElementById('stand');
 
 /*----- event listeners -----*/
-const plyagnButton = document.getElementById('again').addEventListener('click', renderNewShuffledDeck);
-const masterDeck = buildMasterDeck();
-// renderDeckInContainer(masterDeck, document.getElementById('master-deck-container')); OG deck not shuffeled 
-const shuffledContainer = document.getElementById('shuffled-deck-container');
+playAgainButton.addEventListener('click', restartGame);
+betButton.addEventListener('click', bet);
+hitButton.addEventListener('click', hit);
+standButton.addEventListener('click', stand);
 
-/*----- functions -----*/
-
-
-//build a deck 
+/*----- deck from css library */
 function getNewShuffledDeck() {
-  // Create a copy of the masterDeck (leave masterDeck untouched!)
   const tempDeck = [...masterDeck];
   const newShuffledDeck = [];
   while (tempDeck.length) {
-    // Get a random index for a card still in the tempDeck
     const rndIdx = Math.floor(Math.random() * tempDeck.length);
-    // Note the [0] after splice - this is because splice always returns an array and we just want the card object in that array
     newShuffledDeck.push(tempDeck.splice(rndIdx, 1)[0]);
   }
   return newShuffledDeck;
 }
 
 function renderNewShuffledDeck() {
-  // Create a copy of the masterDeck (leave masterDeck untouched!)
   shuffledDeck = getNewShuffledDeck();
   renderDeckInContainer(shuffledDeck, shuffledContainer);
 }
 
-function renderDeckInContainer(deck, container) {
+function renderDeckInContainer(deck, container, numCards) {
   container.innerHTML = '';
-  // Let's build the cards as a string of HTML
   let cardsHtml = '';
-  deck.forEach(function(card) {
-    cardsHtml += `<div class="card ${card.face}"></div>`;
-  });
-  // Or, use reduce to 'reduce' the array into a single thing - in this case a string of HTML markup 
-  // const cardsHtml = deck.reduce(function(html, card) {
-  //   return html + `<div class="card ${card.face}"></div>`;
-  // }, '');
-  container.innerHTML = cardsHtml;
+  for (let i = 0; i < numCards; i++) {
+    if (deck[i]) {
+      cardsHtml += `<div class="card ${deck[i].face}"></div>`;
+    } else {
+      break; 
+    }
+  }
+  container.innerHTML += cardsHtml;
 }
+
 
 function buildMasterDeck() {
   const deck = [];
-  // Use nested forEach to generate card objects
-  suits.forEach(function(suit) {
-    ranks.forEach(function(rank) {
+  suits.forEach(function (suit) {
+    ranks.forEach(function (rank) {
       deck.push({
-        // The 'face' property maps to the library's CSS classes for cards
         face: `${suit}${rank}`,
-        // Setting the 'value' property for game of blackjack, not war
         value: Number(rank) || (rank === 'A' ? 11 : 10)
       });
     });
@@ -81,4 +68,70 @@ function buildMasterDeck() {
   return deck;
 }
 
-renderNewShuffledDeck();
+
+///////
+
+
+function bet() {
+  if (!isGameInProgress) {
+    dealCards();
+    isGameInProgress = true;
+  }
+}
+
+function dealCards() {
+  // Deal two random cards to the player and dealer
+  playerHand.push(shuffledDeck.pop());
+  dealerHand.push(shuffledDeck.pop());
+  playerHand.push(shuffledDeck.pop());
+  dealerHand.push(shuffledDeck.pop());
+  
+  // Update the UI to display the player and dealer cards
+  renderPlayerHand();
+  renderDealerHand();
+}
+
+function renderPlayerHand() {
+  // Display player's cards on the UI
+  const playerHandContainer = document.getElementById('player-hand-container');
+  renderHand(playerHand, playerHandContainer);
+}
+
+function renderDealerHand() {
+  // Display dealer's cards on the UI
+  const dealerHandContainer = document.getElementById('dealer-hand-container');
+  renderHand(dealerHand, dealerHandContainer);
+}
+
+function renderHand(hand, container) {
+  container.innerHTML = '';
+  hand.forEach(function (card) {
+    const cardElement = document.createElement('div');
+    cardElement.classList.add('card', card.face);
+    container.appendChild(cardElement);
+  });
+}
+
+function restartGame() {
+  scores = { player: 0, dealer: 0 };
+  decide = undefined;
+  winner = undefined;
+  playerHand = [];
+  dealerHand = [];
+  isGameInProgress = false;
+  usedCards = [];
+  renderNewShuffledDeck();
+  // Reset UI elements for player and dealer hands
+  const playerHandContainer = document.getElementById('player-hand-container');
+  const dealerHandContainer = document.getElementById('dealer-hand-container');
+  playerHandContainer.innerHTML = '';
+  dealerHandContainer.innerHTML = '';
+}
+
+function hit() {
+  // Logic for player hitting
+}
+
+function stand() {
+  // Logic for player standing
+}
