@@ -9,10 +9,6 @@ body{
     text-align: center;
 }
 
-button{
-   
-    
-}
 button:hover {
     background-color: black;
     color: yellow;
