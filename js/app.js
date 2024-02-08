@@ -33,7 +33,7 @@ hitButton.addEventListener('click', hit);
 standButton.addEventListener('click', stand);
 newGameButton.addEventListener('click', restartGame)
 
-/*----- deck from css library */
+// deck from css library 
 function getNewShuffledDeck() {
   const tempDeck = [...masterDeck];
   const newShuffledDeck = [];
@@ -62,7 +62,6 @@ function renderDeckInContainer(deck, container, numCards) {
   container.innerHTML += cardsHtml;
 }
 
-
 function buildMasterDeck() {
   const deck = [];
   suits.forEach(function (suit) {
@@ -76,12 +75,11 @@ function buildMasterDeck() {
   return deck;
 }
 
-// Display bet amount and funds on 
+// Display bet amount and funds on display on mdn 
 function funds() {
   betDisplay.textContent = `Bet Amount: ${betAmount}`;
   fundsDisplay.textContent = `Player Funds: ${playerFunds}`;
 }
-
 
 // start the game once clicked on bet
 function bet() {
@@ -100,19 +98,19 @@ function bet() {
 function startValue(hand) {
   return hand.reduce((sum, card) => sum + card.value, 0);
 }
-
-function displayHandSum(hand, sumContainer) {
+// display what the card value is mdn
+function displayHandSum(hand, sumContainer, label) {
   const handSum = startValue(hand);
-  sumContainer.textContent = `Sum: ${handSum}`;
-  sumContainer.style.fontSize = '50px'
+  sumContainer.textContent = `${label} Sum: ${handSum}`;
+  sumContainer.style.fontSize = '50px';
 }
 
 function playerHandSum() {
-  displayHandSum(playerHand, document.getElementById('player-hand-sum'));
+  displayHandSum(playerHand, document.getElementById('player-hand-sum'), 'Player');
 }
 
 function dealerHandSum() {
-  displayHandSum(dealerHand, document.getElementById('dealer-hand-sum'));
+  displayHandSum(dealerHand, document.getElementById('dealer-hand-sum'), 'Dealer');
 }
 
 // Deal two random cards to the player and dealer
@@ -128,7 +126,6 @@ function dealCards() {
   playerHandSum();
   dealerHandSum();
 }
-
 
 // Display player's cards 
 function renderPlayerHand() {
@@ -168,31 +165,41 @@ function checkBlackjack() {
   }
 }
 
-//check for bust 
-function checkForBust(hand) {
-  return startValue(hand) > 21;
+//check for bust
+function checkBust() {
+  const playerSum = startValue(playerHand);
+  const dealerSum = startValue(dealerHand);
+
+  if (playerSum > 21) {
+    endGame('Player bust');
+    return true;
+  } else if (dealerSum > 21) {
+    endGame('Dealer bust!');
+    return true;
+  }
+
+  return false;
 }
 
-//check for winner
+//check for winner 
 function checkWinner() {
-  if (checkForBust(playerHand)) {
-    endGame('Player busts! You lose!');
-  } else if (checkForBust(dealerHand)) {
-    endGame('Dealer busts! You win!');
-    // Increment player funds by 10 when player wins
-    playerFunds += 10;
-    funds();
-  } else if (startValue(playerHand) > startValue(dealerHand)) {
+  if (checkBust()) {
+    // Already handled in checkBust() function
+    return;
+  }
+
+  if (startValue(playerHand) > startValue(dealerHand)) {
     endGame('You win!');
     // Increment player funds by 10 when player wins
     playerFunds += 10;
-    funds();
+    funds(); // Update funds display
   } else if (startValue(playerHand) < startValue(dealerHand)) {
     endGame('You lose!');
   } else {
     endGame('It\'s a tie!');
   }
 }
+
 
 //end game 
 function endGame(message) {
@@ -235,21 +242,19 @@ function hit() {
     return;
   }
 
-  if (startValue(playerHand) > 21) {
-    console.log("Player Bust! Over 21!!");
-    return "Bust!";
-  }
-
   playerHand.push(shuffledDeck.pop());
   renderPlayerHand();
   playerHandSum();
 
-  if (startValue(playerHand) === 21) {
+  if (startValue(playerHand) > 21) {
+    endGame('Player Bust! Over 21!!');
+  } else if (startValue(playerHand) === 21) {
     endGame('Player reached 21!');
   }
+
 }
 
-//when player hit stand 
+//when player click stand 
 function stand() {
   while (startValue(dealerHand) < 17) {
     dealerHand.push(shuffledDeck.pop());
@@ -257,6 +262,8 @@ function stand() {
   dealerHit(); // Call dealerHit() function
   renderDealerHand();
   checkWinner();
+  hitButton.disabled = true; // Disable hit button after standing
+  betButton.disabled = true; //disable bet after standing 
 }
 
 //when dealer hit
@@ -267,8 +274,14 @@ function dealerHit() {
   }
   dealerHandSum(); // Update the sum after all cards are added
 
-  // Check if dealer has reached 21
-  if (startValue(dealerHand) === 21) {
+  if (startValue(dealerHand) > 21) {
+    endGame('Dealer busts! You win!');
+    // Increment player funds by 10 when player wins
+    playerFunds += 10;
+    funds(); // Update funds display
+  } else if (startValue(dealerHand) === 21) {
     endGame('Dealer reached 21!');
+  } else {
+    checkWinner();
   }
 }

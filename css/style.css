@@ -1,17 +1,24 @@
-*{
+* {
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
 }
 
 
-body{
-    background-color: pink;
+body {
+    /* link from css gradient  */
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(236, 171, 238, 1) 0%, rgba(104, 194, 248, 1) 69%, rgba(0, 212, 255, 1) 100%);
     text-align: center;
+    font-size: 20px;
 }
 
 button:hover {
     background-color: black;
     color: yellow;
-   
+
 }
 
+button{
+    padding: 20px 30px;
+    font-size: 20px;
+}
