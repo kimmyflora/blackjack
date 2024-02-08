@@ -26,5 +26,5 @@ Click on bet to begin!
 
 Next Steps:
 
-- have one of the delaer's card face down 
+- have one of the delaer's card face down once player bet 
 - add some cool features to it 

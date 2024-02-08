@@ -266,9 +266,9 @@ function stand() {
   betButton.disabled = true; //disable bet after standing 
 }
 
-//when dealer hit
+//when dealer hit auto does it
 function dealerHit() {
-  while (startValue(dealerHand) < 17) {
+  while (startValue(dealerHand) < 17) { //if start value is less than 17 needs to hit after player 
     dealerHand.push(shuffledDeck.pop());
     renderDealerHand();
   }
