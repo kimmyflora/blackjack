@@ -6,7 +6,7 @@ Player will be playing against the dealer. The goal of this game is to score hig
 
 Uses JavaScript, HTML, CSS.
 
-Link 
+Link -> https://kimmyflora.github.io/blackjack/
 
 Click on bet to begin! 
 
