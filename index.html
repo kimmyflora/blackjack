@@ -12,17 +12,19 @@
 
 <body>
     <main>
-        <h1>Welcome to BlackJack <br> Place your bet to start! </h1>
+        <h1>Welcome to BlackJack <br> Click on Start Game to begin!  </h1>
         <div id="shuffled-deck-container"></div>
-        <div id="player-hand-container">Player</div>
-        <div id="dealer-hand-container">Dealer</div>
+        <div id="player-hand-container"></div>
+        <div id="dealer-hand-container"></div>
         <div id="player-hand-sum"></div>
         <div id="dealer-hand-sum"></div>
         <div id="resultElement"></div>
-        <button id="bet">Bet</button>
-        <button id="hit">Hit</button>
-        <button id="stand">Stand</button>
-        <button id="newGameButton">Next Hand</button>
+        <!--my freind told me how to hide button on main -->
+        <button id="startGameButton">Start Game</button>
+        <button id="bet" style="display: none;">Bet</button>
+        <button id="hit" style="display: none;">Hit</button>
+        <button id="stand" style="display: none;">Stand</button>
+        <button id="newGameButton" style="display: none;">Next Hand</button>        
         <div id="betting-section">
             <p id="bet-display">Bet Amount: 0</p>
             <p id="funds-display">Player Funds: 100</p>

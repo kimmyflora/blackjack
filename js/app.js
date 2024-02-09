@@ -26,12 +26,14 @@ const resultElement = document.getElementById('resultElement');
 const newGameButton = document.getElementById('newGameButton');
 const betDisplay = document.getElementById('bet-display');
 const fundsDisplay = document.getElementById('funds-display');
+const startGameButton = document.getElementById('startGameButton');
 
 /*----- event listeners -----*/
 betButton.addEventListener('click', bet);
 hitButton.addEventListener('click', hit);
 standButton.addEventListener('click', stand);
 newGameButton.addEventListener('click', restartGame)
+startGameButton.addEventListener('click', startGame);
 
 // deck from css library 
 function getNewShuffledDeck() {
@@ -81,18 +83,38 @@ function funds() {
   fundsDisplay.textContent = `Player Funds: ${playerFunds}`;
 }
 
-// start the game once clicked on bet
-function bet() {
-  if (!isGameInProgress) {
-    betAmount = 10; // Set the bet amount to $10
-    playerFunds -= betAmount;
-    funds(); //display funds amount and bet per round 
-    renderNewShuffledDeck(); //start the deck
-    dealCards(); // Deal cards 
-    isGameInProgress = true; // Set game in progress f
-    resultElement.textContent = ''; // Clear any previous message
+// Function to start the game
+function startGame() {
+  // Check if the game is already in progress
+  if (isGameInProgress) {
+    alert('Game is already in progress!');
+    return;
   }
+  
+  // Hide the start button and show the other buttons my freind taught me this
+  startGameButton.style.display = 'none';
+  betButton.style.display = 'inline-block';
+  hitButton.style.display = 'inline-block';
+  standButton.style.display = 'inline-block';
+  newGameButton.style.display = 'inline-block';
+  
+  // Set up the game
+  renderNewShuffledDeck(); // Start the deck
+  isGameInProgress = true; // Set game in progress 
+  resultElement.textContent = ''; // Clear any previous message
 }
+
+// clicked on bet
+function bet() {
+  betAmount = 10; // Set the bet amount to $10
+  playerFunds -= betAmount;
+  funds(); // Display funds amount and bet per round 
+  renderNewShuffledDeck(); // Start the deck
+  dealCards(); // Deal cards 
+  isGameInProgress = true; // Set game in progress 
+  resultElement.textContent = ''; // Clear any previous message
+}
+
 
 // tell what the starting value is for dealer and player 
 function startValue(hand) {
@@ -231,7 +253,7 @@ function restartGame() {
   dealerHandContainer.innerHTML = '';
 
   // Change the button text and disable it until bet is clicked
-  newGameButton.textContent = 'New Game';
+  newGameButton.textContent = 'Next Hand';
   newGameButton.disabled = false;
 }
 
