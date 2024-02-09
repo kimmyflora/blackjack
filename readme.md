@@ -12,14 +12,12 @@ Click on bet to begin!
 
 
 
-![Alt text](pic1-1.png)
+![Alt text](<Screenshot 2024-02-09 at 9.04.19 AM.png>)
 
 
 
-![Alt text](<pic 2.png>)
 
-
-
+![Alt text](<Screenshot 2024-02-09 at 9.04.42 AM.png>)
 
 
 
