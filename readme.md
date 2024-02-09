@@ -8,7 +8,7 @@ Uses JavaScript, HTML, CSS.
 
 Link -> https://kimmyflora.github.io/blackjack/
 
-Click on bet to begin! 
+Click on Start Game to begin! 
 
 
 
